@@ -29,19 +29,19 @@ The project Architecture is described below:
 ![Architecture Diagram](/screenshots/architecture.png)
 
 The flow happens in this order:
-1. From Git to a running pod with secrets injected
+1. From Git to a running pod with secrets injected: 
 Git Repository >> ExternalSecret manifests — zero secret values, safe to make public
-2. Kustomize
+2. Kustomize: 
 (merges base + overlay into environment-specific manifests)
-3. kubectl apply -k
-(single command deploys entire environment)
-4. External Secrets Operator
-Watches ExternalSecret resources, authenticates to Vault via Kubernetes ServiceAccount
-5. HashiCorp Vault
+3. kubectl apply -k: 
+The Single command deploys entire environment
+4. External Secrets Operator: 
+watches ExternalSecret resources, authenticates to Vault via Kubernetes ServiceAccount
+5. HashiCorp Vault: 
 Enforces eso-webapp-policy — read only, specific paths per environment
-6. Kubernetes Secret
+6. Kubernetes Secret: 
 Created automatically in the correct namespace — never committed to Git
-7. webapp Pod
+7. webapp Pod: 
 DB_PASSWORD and API_KEY available as environment variables at runtime
 
 ---
@@ -329,7 +329,9 @@ kubectl get clustersecretstore vault-cluster-store
 
 ### Why Not Sealed Secrets
 
-> *"Sealed Secrets was considered but rejected — while it solves the Git safety problem, it couples secret management to the cluster, provides no rotation capability, no audit trail, and no access policy enforcement. For a production platform team, secrets management is a security domain, not just a deployment concern. ESO with HashiCorp Vault decouples secret storage from Kubernetes entirely, enables automatic rotation, provides full audit logging via Vault's audit backend, and supports multi-cluster and multi-cloud topologies without re-encrypting secrets per cluster."*
+> *"I considered Sealed Secrets but I then rejected it — while it solves the Git safety problem, it couples secret management to the cluster, provides no rotation capability, no audit trail, and no access policy enforcement. 
+> 
+> For a production platform team, secrets management is a security domain, not just a deployment concern. ESO with HashiCorp Vault decouples secret storage from Kubernetes entirely, enables automatic rotation, provides full audit logging via Vault's audit backend, and supports multi-cluster and multi-cloud topologies without re-encrypting secrets per cluster."*
 
 ### Why ESO + HashiCorp Vault
 
