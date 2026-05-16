@@ -325,6 +325,21 @@ kubectl get clustersecretstore vault-cluster-store
 
 ---
 
+## Kustomize Build Validation
+
+The repository includes pre-generated build outputs to validate the Kustomize structure without requiring cluster access:
+
+- **Staging**: [`k8s/build-output/staging-manifest.yaml`](k8s/build-output/staging-manifest.yaml)
+- **Production**: [`k8s/build-output/production-manifest.yaml`](k8s/build-output/production-manifest.yaml)
+
+Additionally, actual cluster state captures from the working deployment are included:
+- [`k8s/build-output/staging-cluster-state.txt`](k8s/build-output/staging-cluster-state.txt)
+- [`k8s/build-output/production-cluster-state.txt`](k8s/build-output/production-cluster-state.txt)
+
+These files prove the Kustomize base/overlay pattern works correctly and that both environments deployed successfully.
+
+---
+
 ## Secret Management Approach
 
 ### Why Not Sealed Secrets
