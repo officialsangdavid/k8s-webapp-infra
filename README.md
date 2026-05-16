@@ -493,6 +493,7 @@ To fully remove the local development environment and all deployed resources:
 kubectl delete -k k8s/overlays/staging
 kubectl delete -k k8s/overlays/production
 ```
+![cleanup-clusters](/screenshots/delete-workloads.png)
 
 ### Delete namespaces
 
@@ -502,12 +503,14 @@ kubectl delete namespace production
 kubectl delete namespace external-secrets
 kubectl delete namespace vault
 ```
+![cleanup-clusters](/screenshots/delete-namespaces.png)
 
 ### Destroy the kind cluster
 
 ```bash
 kind delete cluster --name webapp-cluster
 ```
+![cleanup-clusters](/screenshots/delete-kind-cluster.png)
 
 ### Verify cleanup
 
