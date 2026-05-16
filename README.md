@@ -47,7 +47,7 @@ DB_PASSWORD and API_KEY available as environment variables at runtime
 ---
 
 ## Repository Structure
-![structure](./screenshots/Flow.png)
+![structure](./screenshots/Flowimage.png)
 
 ## Environment Differences
 
