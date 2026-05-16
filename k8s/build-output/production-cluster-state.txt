@@ -1,0 +1,17 @@
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/webapp-58cdcfd578-5bqkq   1/1     Running   0          4m18s
+pod/webapp-58cdcfd578-bgtps   1/1     Running   0          4m18s
+pod/webapp-58cdcfd578-zsphd   1/1     Running   0          4m18s
+
+NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/webapp   ClusterIP   10.96.140.100   <none>        80/TCP    4m18s
+
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/webapp   3/3     3            3           4m18s
+
+NAME                                DESIRED   CURRENT   READY   AGE
+replicaset.apps/webapp-58cdcfd578   3         3         3       4m18s
+NAME            STORETYPE            STORE                 REFRESH INTERVAL   STATUS         READY   LAST SYNC
+webapp-secret   ClusterSecretStore   vault-cluster-store   1h                 SecretSynced   True    4m18s
+NAME            TYPE     DATA   AGE
+webapp-secret   Opaque   2      4m19s
