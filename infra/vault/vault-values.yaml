@@ -1,0 +1,19 @@
+server:
+  dev:
+    enabled: true
+    devRootToken: "root"
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "200m"
+  standalone:
+    enabled: true
+
+ui:
+  enabled: false
+
+injector:
+  enabled: false
