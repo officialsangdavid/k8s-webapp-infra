@@ -1,0 +1,17 @@
+*.env
+.env.*
+secrets.yaml
+secret.yaml
+*-secret.yaml
+vault-token
+.vault-token
+*.pem
+*.key
+kubeconfig
+*.kubeconfig
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+infra/eso/vault-token-secret.yaml
