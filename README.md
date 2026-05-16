@@ -14,40 +14,35 @@ Before touching a single file, I asked one question:
 
 The answer drove every decision in this repository:
 
-- **Any engineer can clone this repo and deploy a full environment with one command** — no tribal knowledge, no manual steps, no undocumented dependencies
-- **No secret value ever touches Git, ever** — not plaintext, not base64, not encrypted blobs tied to a single cluster
-- **Staging and production are completely isolated** — a change to one overlay cannot accidentally affect the other, including at the secrets layer
+- **Any engineer should be able to clone this repo and deploy a full environment with one command** — no tribal knowledge, no manual steps, no undocumented dependencies
+- **No secret value should ever touch Git, ever** — not plaintext, not base64, not encrypted blobs tied to a single cluster
+- **Staging and production environments are completely isolated** — a change to one overlay cannot accidentally affect the other, including the secrets layer
 - **The structure is extensible** — adding a third environment such as `qa` means copying an overlay folder and changing four values. That is it.
 
-This is not just a Kubernetes task. It is a demonstration of how a platform team thinks about repeatability, security, and operational maturity.
+This is not just a Kubernetes project. It is a demonstration of how a platform team thinks about repeatability, security, and operational maturity.
 
 ---
 
 ## Architecture
+The project Architecture is described below:
 
 ![Architecture Diagram](/screenshots/architecture.png)
 
-The flow from Git to a running pod with secrets injected:
-Git Repository
-(ExternalSecret manifests — zero secret values, safe to make public)
-↓
-Kustomize
+The flow happens in this order:
+1. From Git to a running pod with secrets injected
+Git Repository >> ExternalSecret manifests — zero secret values, safe to make public
+2. Kustomize
 (merges base + overlay into environment-specific manifests)
-↓
-kubectl apply -k
+3. kubectl apply -k
 (single command deploys entire environment)
-↓
-External Secrets Operator
-(watches ExternalSecret resources, authenticates to Vault via Kubernetes ServiceAccount)
-↓
-HashiCorp Vault
-(enforces eso-webapp-policy — read only, specific paths per environment)
-↓
-Kubernetes Secret
-(created automatically in the correct namespace — never committed to Git)
-↓
-webapp Pod
-(DB_PASSWORD and API_KEY available as environment variables at runtime)
+4. External Secrets Operator
+Watches ExternalSecret resources, authenticates to Vault via Kubernetes ServiceAccount
+5. HashiCorp Vault
+Enforces eso-webapp-policy — read only, specific paths per environment
+6. Kubernetes Secret
+Created automatically in the correct namespace — never committed to Git
+7. webapp Pod
+DB_PASSWORD and API_KEY available as environment variables at runtime
 
 ---
 
@@ -485,3 +480,40 @@ To regenerate:
 kustomize build k8s/overlays/staging
 kustomize build k8s/overlays/production
 ```
+
+---
+
+## Cleanup / Destroy the Environment
+
+To fully remove the local development environment and all deployed resources:
+
+### Delete application workloads
+
+```bash
+kubectl delete -k k8s/overlays/staging
+kubectl delete -k k8s/overlays/production
+```
+
+### Delete namespaces
+
+```bash
+kubectl delete namespace staging
+kubectl delete namespace production
+kubectl delete namespace external-secrets
+kubectl delete namespace vault
+```
+
+### Destroy the kind cluster
+
+```bash
+kind delete cluster --name webapp-cluster
+```
+
+### Verify cleanup
+
+```bash
+kind get clusters
+kubectl config get-contexts
+```
+
+After deletion, the local Kubernetes environment is fully cleaned up and no cluster resources remain running.
